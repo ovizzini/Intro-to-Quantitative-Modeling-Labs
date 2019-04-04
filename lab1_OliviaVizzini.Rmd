@@ -1,0 +1,146 @@
+# Week 1: R basics 
+# BIOS 20151
+
+Olivia Vizzini
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring web pages (click the **Help** toolbar button for more details on using R Markdown).
+
+When you click the **Knit HTML** button a web page will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r}
+summary(cars)
+```
+
+You can also embed plots, for example:
+
+```{r fig.width=7, fig.height=6}
+plot(cars)
+```
+
+You can make text **bold** or *italic* like so. You can also use mathematical notation called LaTeX, which you'll see me use below to generate nice-looking equations. LaTeX commands are surrounded by dollar signs (for example $e^x$), but you don't need to learn it yourself for your own reports.
+
+
+
+## To prepare for this week's R review
+* Download R from https://cran.rstudio.com/ by choosing the R distribution compatible with your operating system, download and install R on your computer.
+* Download R Studio from https://www.rstudio.com/ide/download/desktop again choose the distribution built for your OS, download and install R Studio on your computer.
+* Read section 1.3 
+* Read section 2.3
+
+
+
+## Submitting:
+Submit this edited .Rmd file with your name in the title, through the R assignment 1 link on canvas before the deadline.
+
+
+## Grading:
+
+10 pts per question (3 pts for part 1, 7 pts for part 2)
+
+
+##  Computation using variables and plotting
+
+In the following tasks you will translate mathematical models into R commands and make the computer perform calculations. The first step is to give descriptive names to these variables (instead of single letters!), and then use these variables to calculate the predictions of the models.
+
+
+1. Take the model of a heart pumping with a constant rate, where $V_{tot}$ is the total volume of blood pumped by the heart over time, $V_s$ is the stroke volume, $R$ is the heart rate and $t$ is time:
+
+
+$$ 
+V_{tot} = V_sRt
+$$ 
+
+
+Calculate the volume of blood pumped by a heart beating at 80 beats per minute with stroke volume of 70 ml over 80 minutes (the length of one class) by creating variables for the stroke volume, heart rate, and time (come up with your own descriptive names). Perform the calculation and assign the result to a variable, then print out the answer.
+
+```{r}
+strokevolume <- 70 
+heartrate <- 80 
+time <- 80
+bloodvolume <-strokevolume*heartrate*time
+print(bloodvolume)
+```
+
+
+Plot the total blood pumped by the heart as a function of time by assigning time to be a vector from 0 to 80 minutes with step 1 minute and calculating a vector of values of volume, keeping the same values of stroke volume and heart rate. Print out the value of the 47th element of the vector. Plot the volume vs time using the type line with black line color and label your axes. Then change the heart rate to 120 beats per minute and overlay that plot on top of the previous one using the lines() funcion with red line color. Based on the plots, describe what kind of function is this model, and what is the graphical difference between the two graphs.
+
+```{r}
+time <- 0:80
+bloodvolume <- strokevolume*heartrate*time
+print(bloodvolume[c(47)])
+plot(time,bloodvolume, main = "Blood Volume vs. Time", xlab = "Time (minutes)", ylab = "Blood Volume (mL)", type='l')
+heartrate <- 120 
+bloodvolume2 <- strokevolume*heartrate*time
+lines(time, bloodvolume2, col=2)
+```
+
+257600 mL
+This is a linear function. The red line (heart rate of 120 bpm) has a steeper slope than the black line (heart rate of 80 bpm). 
+
+
+2. Take the model of the bacterial population that doubles every hour, where $P$ is the current population, $P_0$ is the initial population, and $t$ is the elapsed time:
+
+$$ 
+P = P_0 2^t
+$$
+
+Calculate the bacterial population after 3 days (think of the units of time!) if the initial population is a million by creating variables for the growth time and initial population. Perform the calculation and assign the result to a variable, then print out the answer. 
+
+```{r}
+initialpop <- 10^6 
+growthtime <- 72
+bacterialpop <- initialpop*2^growthtime
+print(bacterialpop)
+```
+
+
+Plot the bacterial population as a function of time by assigning time as a vector from 0 to 3 days with step of 1 hour, and calculate a vector of values of population, starting with the same initial population. Print out the value of the 20th element of the vector. Plot the population vs time using the type line with black line color and label your axes. Then change the initial population to 2 million and overlay that plot on top of the previous one using the lines() function with red line color. Based on the plots, describe what kind of function is this model, and what is the graphical difference between the two graphs.
+
+```{r}
+growthtime <- 0:72
+bacterialpop <- initialpop*2^growthtime
+print(bacterialpop[c(20)])
+plot(growthtime,bacterialpop, main = "Bacterial Population vs. Growth Time", xlab = "Time (hours)", ylab = "Bacterial Population", type='l')
+initialpop <- 2*10^6
+bacterialpop2 <- initialpop*2^growthtime
+lines(growthtime, bacterialpop2, col=2)
+```
+
+5.24288e+11 bacteria
+This model is an exponential function. The two plots differ in that the red line increases towards exponential growth at a earlier time than the black line. 
+
+
+3. The model for rate of an enzyme-catalyzed reaction, where $v$ is the rate of the reaction, $v_{max}$ is the maximum reaction rate, $K_M$ is the Michaelis constant, and $A$ is concentration of the substrate:
+$$
+v = \frac{v_{max} A}{K_M+A}
+$$
+
+
+Calculate the rate of the reaction given the substrate concentration of 1 mM, the maximum rate of 10 per second, and the Michaelis constant of 30 mM by creating variables for the substrate concentration, maximum reaction rate, the Michaelis constant. Perform the calculation and assign the result to a variable, then print out the answer.
+
+```{r}
+substrateconc <- 1
+maxrxnrate <- 10
+Michaelisconstant <- 30
+rxnrate <- (maxrxnrate*substrateconc)/(Michaelisconstant+substrateconc)
+print(rxnrate)
+```
+
+
+Plot the reaction rate as a function of substrate concentration by assigning the substrate concentration to be a vector from 0 to 100 mM with step of 1 mM, and calculating a vector of reaction rates, keeping the same values for all the other variables. Print out the value of the 35th element of the vector. Plot the reaction rate vs concentration using the type line with black line color and label your axes. Based on the plot, at what value of concentration is the reaction rate equal to half of the maximum rate $v_{max}$? Change the Michaelis constant $K_M$ to be 60 mM and overlay that plot on top of the  previous one using the lines() function with red line color, and report at what concentration is the reaction rate one half of $v_{max}$. How is this value influenced by $K_M$?
+
+```{r}
+substrateconc <- 0:100
+rxnrate <- (maxrxnrate*substrateconc)/(Michaelisconstant+substrateconc)
+print(rxnrate[c(35)])
+plot(substrateconc,rxnrate, main = "Reaction Rate vs. Substrate Concentration", xlab = "Substrate Concentration (mM)", ylab = "Reaction Rate (per second)", type='l')
+Michaelisconstant <- 60
+rxnrate2 <- (maxrxnrate*substrateconc)/(Michaelisconstant+substrateconc)
+lines(substrateconc, rxnrate2, col=2) 
+```
+
+5.3125 per second
+When the reaction rate is equal to half the maximum rate (equal to 5), the substrate concentration is about 30 mM. 
+With the new Michaelis constant, the substrate concentration at this point is about 60 mM.
+By doubling the Michaelis constant, the substrate concentration is also doubled. 
+
